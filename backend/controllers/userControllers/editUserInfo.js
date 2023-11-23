@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 export const editSelfInfo = async (req, res) => {
     try {
-        const { token, fullName, email, phoneNo, collegeId, department, role, password, division } = req.body;
+        const { token, fullName, email, phoneNo, collegeId, department,  password, division } = req.body;
         const id = decodeTokenAndGetId(token);
 
         const userSnapshot = await Users.doc(id).get();
@@ -27,7 +27,6 @@ export const editSelfInfo = async (req, res) => {
             phoneNo,
             collegeId,
             department,
-            role,
             password: hashedPassword,
             division
         };

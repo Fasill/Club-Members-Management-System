@@ -7,7 +7,6 @@ export const FastLogin = async (req, res) => {
     let userSnapshot;
 
     // If email is not provided in the query parameters, use a default one
-  
       var targetEmail = 'fasilhawultie19@gmail.com';
       userSnapshot = await Users.where('email', '==', targetEmail).get();
 

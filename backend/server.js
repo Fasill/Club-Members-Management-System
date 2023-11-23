@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-import router from "./router/userAuthRouter.js";
+import router from "./router/userRouter.js";
+import authRouter from "./router/authRouter.js";
 
 const app = express();
 
@@ -12,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(router);
+app.use(authRouter);
 
-const port =  8080; // Use the environment-provided port or 8080 as a fallback
-
+const port =  8080;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
