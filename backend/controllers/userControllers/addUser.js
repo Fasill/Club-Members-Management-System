@@ -75,7 +75,7 @@ const sendOtpEmail = async (email, otp) => {
       html: `
         <p>Congratulations! You have been successfully added to the CSEC Club.</p>
         <p>Click the link below to log in and start exploring our community:</p>
-        <a href="https://talent-tracker-ats-dszgwhplxa-el.a.run.app/verifyuser?&k=${otp}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log In to CSEC Club</a>
+        <a href="https://talent-tracker-ats-dszgwhplxa-el.a.run.app/verifyuser?k=${otp}&email=${email}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log In to CSEC Club</a>
         <p>We look forward to your active participation!</p>
       `,
     };
@@ -130,11 +130,8 @@ export const signUpPresident = async (req, res) => {
 export const verifyOtpLink = async (req, res) => {
 
 
-  var otp = req.query.key;
+  var otp = req.query.k;
   otp = parseInt(otp, 10);
-  console.log("Received OTP:", otp);
-  const compId = req.query.compId;
-  console.log("Company ID:", compId);
   const email = req.query.email;
 
   const userSnapshot = await Users.where('email', '==', email).get();
@@ -146,10 +143,7 @@ export const verifyOtpLink = async (req, res) => {
   console.log("Generated Token:", token);
 
   try {
-    const userDoc = await Companies.doc(compId).get();
-    if (!userDoc.exists) {
-      return res.status(404).send('Company not found');
-    }
+
 
     const otpDoc = await otpRef.doc(email).get();
 
@@ -158,7 +152,8 @@ export const verifyOtpLink = async (req, res) => {
     } else {
       const storedOTP = otpDoc.data().otp;
 
-      const userSnapshot = Users.where("email", "==", email)
+      const userSnapshot = Users.where("email", "==", email);
+
       userSnapshot.get()
         .then((querySnapshot) => {
           if (querySnapshot.empty) {
