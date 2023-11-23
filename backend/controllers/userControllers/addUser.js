@@ -1,4 +1,4 @@
-import { Users, Companies } from '../../models/User.js';
+import { Users } from '../../models/User.js';
 import { generateToken } from '../../utils/tokenGenerator.js';
 import { otpRef } from '../../models/User.js';
 import nodemailer from 'nodemailer';
@@ -91,7 +91,7 @@ const sendOtpEmail = async (email, otp) => {
 }
 
 // Function to send an OTP and handle the response
-const sendOtp = async (email) => {
+export const sendOtp = async (email) => {
   try {
     const otp = Math.floor(100000 + Math.random() * 900000);
     console.log("Generated OTP:", otp);
