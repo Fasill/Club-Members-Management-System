@@ -37,3 +37,32 @@ export const retrieveAllMembers = async (req, res) => {
     }
 };
 
+
+export const retrieveAdmins = async (req, res) => {
+    
+    const {token} = req.query;
+
+    try {
+        const id = decodeTokenAndGetId(token);
+        const userSnapshot = await Users.doc(id).get();
+
+        if (!userSnapshot.exists) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        const userData = userSnapshot.data();
+
+        if (userData.role !== 'president' ) {
+            return res.status(403).send({ message: 'You are not eligible for this.' });
+        }
+
+        const membersSnapshot = await Users.where('role', '==', 'admin').get();
+        
+        const membersData = membersSnapshot.docs.map(doc => doc.data());
+
+        res.status(200).send({ members: membersData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
