@@ -38,7 +38,8 @@ export const addMember = async (req, res) => {
       collegeId,
       department,
       role,
-      password: ''
+      password: '',
+      division: ['cbd']
     };
 
     await Users.add(info);
@@ -75,7 +76,7 @@ const sendOtpEmail = async (email, otp) => {
       html: `
         <p>Congratulations! You have been successfully added to the CSEC Club.</p>
         <p>Click the link below to log in and start exploring our community:</p>
-        <a href="https://talent-tracker-ats-dszgwhplxa-el.a.run.app/verifyuser?k=${otp}&email=${email}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log In to CSEC Club</a>
+        <a href="http://localhost:8080/verifyOtp?k=${otp}&email=${email}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log In to CSEC Club</a>
         <p>We look forward to your active participation!</p>
       `,
     };
