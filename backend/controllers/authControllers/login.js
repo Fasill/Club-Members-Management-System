@@ -32,7 +32,6 @@ export const login = async (req, res) => {
 };
 
 
-Implements email-based login using secure POST requests.
 export const loginByEmail = async(req,res)=>{
     const {email} = req.body;
     try{

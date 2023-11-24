@@ -1,6 +1,6 @@
 import admin from "firebase-admin"
 
-import serviceAccount from "../serviceAccountKey.json"  assert { type: "json" };
+import serviceAccount from "../credentials/serviceAccountKey.json"  assert { type: "json" };
 // import * as serviceAccountKey from './serviceAccountKey.json';
 
 const firebaseConfig = {
@@ -22,4 +22,6 @@ const db = admin.firestore();
 
 export const otpRef  = db.collection("otp");
 export const Users = db.collection('User');
+export const Events= db.collection('Events');
+
 
