@@ -1,6 +1,8 @@
 import { Users,otpRef } from '../../models/User.js';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
+import {generateToken} from '../../utils/tokenGenerator.js' 
+// import genere
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -21,9 +23,11 @@ export const login = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).send({ message: 'Invalid password' });
     }
-
+    const userDoc = userSnapshot.docs[0]
+    const userId = userDoc.id;
+    const token = generateToken(userId);
     // At this point, the login is successful
-    res.status(200).send({ message: 'Login successful', user: userData });
+    res.status(200).send({ message: 'Login successful', token: token});
 
   } catch (e) {
     console.error(e);
