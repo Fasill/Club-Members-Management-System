@@ -1,162 +1,89 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { localBackendLink, onlineBackendLink } from '../../utils/links.js';
+import axios from 'axios';
 
 const MemberTable = () => {
+  const [members, setMembers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("Members"); // Default selected role
+
+  useEffect(() => {
+    setIsLoading(true);
+    const token = localStorage.getItem('token');
+    let apiUrl = `${onlineBackendLink}/retrieveAllMembers?token=${token}`;
+
+    if (selectedRole === "Admin") {
+      apiUrl = `${onlineBackendLink}/retrieveAdmins?token=${token}`;
+    }
+
+    axios.get(apiUrl)
+      .then((response) => {
+        console.log(response);
+        setMembers(response.data.members); // Assuming the data is an array of members
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching members:', error);
+        setIsLoading(false);
+      });
+  }, [selectedRole]);
+
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value);
+  };
 
   return (
-    <div className='flex hi-screen overflow-hide '>
-     <div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" className="checkbox" />
-          </label>
-        </th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* row 1 */}
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" className="checkbox" />
-          </label>
-        </th>
-        <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <div className="mask mask-squircle w-12 h-12">
-                <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold">Hart Hagerty</div>
-              <div className="text-sm opacity-50">United States</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          Zemlak, Daniel and Leannon
-          <br/>
-          <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-        </td>
-        <td>Purple</td>
-        <th>
-          <button className="btn btn-ghost btn-xs">details</button>
-        </th>
-      </tr>
-      {/* row 2 */}
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" className="checkbox" />
-          </label>
-        </th>
-        <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <div className="mask mask-squircle w-12 h-12">
-                <img src="/tailwind-css-component-profile-3@56w.png" alt="Avatar Tailwind CSS Component" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold">Brice Swyre</div>
-              <div className="text-sm opacity-50">China</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          Carroll Group
-          <br/>
-          <span className="badge badge-ghost badge-sm">Tax Accountant</span>
-        </td>
-        <td>Red</td>
-        <th>
-          <button className="btn btn-ghost btn-xs">details</button>
-        </th>
-      </tr>
-      {/* row 3 */}
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" className="checkbox" />
-          </label>
-        </th>
-        <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <div className="mask mask-squircle w-12 h-12">
-                <img src="/tailwind-css-component-profile-4@56w.png" alt="Avatar Tailwind CSS Component" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold">Marjy Ferencz</div>
-              <div className="text-sm opacity-50">Russia</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          Rowe-Schoen
-          <br/>
-          <span className="badge badge-ghost badge-sm">Office Assistant I</span>
-        </td>
-        <td>Crimson</td>
-        <th>
-          <button className="btn btn-ghost btn-xs">details</button>
-        </th>
-      </tr>
-      {/* row 4 */}
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" className="checkbox" />
-          </label>
-        </th>
-        <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <div className="mask mask-squircle w-12 h-12">
-                <img src="/tailwind-css-component-profile-5@56w.png" alt="Avatar Tailwind CSS Component" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold">Yancy Tear</div>
-              <div className="text-sm opacity-50">Brazil</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          Wyman-Ledner
-          <br/>
-          <span className="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-        </td>
-        <td>Indigo</td>
-        <th>
-          <button className="btn btn-ghost btn-xs">details</button>
-        </th>
-      </tr>
-    </tbody>
-    {/* foot */}
-    <tfoot>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-        <th></th>
-      </tr>
-    </tfoot>
-    
-  </table>
-</div>
+    <div className="overflow-x-auto h-[100%] p-10">
+      <table className="table table-xs h-[100%] bg-[#f6f7fa] shadow-md">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th className='max-sm:hidden'>Email</th>
+            <th className='max-md:hidden'>Department</th>
+            <th>
+              <select onChange={handleRoleChange} value={selectedRole}>
+                <option value="Members">Members</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </th>
+            <th className='max-md:hidden'>Phone No</th>
+          </tr>
+        </thead>
+        {!isLoading ? (
+          <tbody>
+            {members.map((member, index) => (
+              <tr className='hover:bg-[#eceff3] h-[89px] cursor-pointer' key={index}>
+                <th>{index + 1}</th>
+                <td>{member.fullName}</td>
+                <td className='max-sm:hidden'>{member.email}</td>
+                <td className='max-md:hidden'>{member.department}</td>
+                <td>{member.role}</td>
+                <td className='max-md:hidden'>{member.phoneNo}</td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <span className="loading loading-ring loading-lg"></span>
+        )}
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th className='max-sm:hidden'>Email</th>
+            <th className='max-md:hidden'>Department</th>
+            <th>
+              <select onChange={handleRoleChange} value={selectedRole}>
+                <option value="Members">Members</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </th>
+            <th className='max-md:hidden'>Phone No</th>
+          </tr>
+        </tfoot>
+      </table>
     </div>
-  )
-}
+  );
+};
 
-export default MemberTable
+export default MemberTable;

@@ -6,7 +6,7 @@ import Members from './pages/Members.js';
 import Dashboard from './pages/Dashboard.js';
 // import Members from './pages/Members.js';
 import AddMember from './pages/AddMember.js'
-
+import Layout from './pages/layout.js'
 function App() {
   return (
     <div className="App">
@@ -16,9 +16,10 @@ function App() {
           <Route path='' element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/dashboard' element = {<Dashboard/>}/>
-          {/* <Route path='/Members' element={<Members/>}/> */}
-          <Route path='/addMembers' element = {<AddMember/>}/>
-          <Route path='/Members' element = {<Members/>}/>
+          <Route path='/' element={<Layout/>}>
+           <Route path='/addMembers' element = {<AddMember/>}/>
+            <Route path='/Members' element = {<Members/>}/>
+          </Route>
 
 
         </Routes>

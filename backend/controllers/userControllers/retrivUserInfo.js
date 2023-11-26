@@ -5,7 +5,6 @@ import {Users} from '../../models/User.js';
 export const retrieveAllMembers = async (req, res) => {
     
     const {division,token} = req.query;
-
     try {
         const id = decodeTokenAndGetId(token);
         const userSnapshot = await Users.doc(id).get();
@@ -63,6 +62,24 @@ export const retrieveAdmins = async (req, res) => {
         res.status(200).send({ members: membersData });
     } catch (error) {
         console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
+
+export const retrieveLoggedInUserInfo = async (req, res) => {
+    const { token } = req.query;
+
+    const id = decodeTokenAndGetId(token);
+
+    try {
+        const userSnapshot = await Users.doc(id).get();
+
+        const userData = userSnapshot.data();
+
+        res.send(userData);
+    } catch (error) {
+        console.error(error);
+
         res.status(500).send({ message: 'Internal Server Error' });
     }
 };

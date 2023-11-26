@@ -9,14 +9,11 @@ import NavBar from '../components/navbar/navbar.js';
 const AddMember = () => {
 
   return (
-    <div className='flex hi-screen overflow-hide '>
-      <div className='h-screen max-xl:hidden '><SideNavbar/></div>
-      <div className='grid bg-green-200 h-screen overflow-auto w-full'>
-        <div ><NavBar/></div>
+   <div className=''>
         
         <AddMemberForm/>
-      </div>
-    </div>
+        </div>
+
   )
 }
 

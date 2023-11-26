@@ -62,7 +62,7 @@ const AddMemberForm = () => {
 
       formData.token = localStorage.getItem('token');
       setIsSubmitting(true);
-      const response = await axios.post(`${localBackendLink}/addMember`, formData);
+      const response = await axios.post(`${onlineBackendLink}/addMember`, formData);
       console.log('Member added:', response.data);
       setIsSubmitted(true);
 

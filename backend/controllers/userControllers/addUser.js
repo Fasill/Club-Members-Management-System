@@ -5,10 +5,11 @@ import nodemailer from 'nodemailer';
 import { decodeTokenAndGetId } from '../../utils/decodeTokenAndGetId.js';
 
 export const addMember = async (req, res) => {
+  
   const { fullName, email, phoneNo, collegeId, department, role, token } = req.body;
 
   const id = decodeTokenAndGetId(token);
-
+  console.log("id",id)
   try {
     const adminSnapshot = await Users.doc(id).get();
     const adminData = adminSnapshot.data();

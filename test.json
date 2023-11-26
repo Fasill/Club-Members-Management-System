@@ -1,0 +1,26 @@
+[
+    {
+        "division": [
+            "cbd"
+        ],
+        "password": "",
+        "role": "member",
+        "collegeId": "C54e321",
+        "fullName": "kiya kebe",
+        "department": "Mechanicale Engineering",
+        "email": "test1@g.com",
+        "phoneNo": "555-123-45w67"
+    },
+    {
+        "division": [
+            "cbd"
+        ],
+        "password": "",
+        "role": "member",
+        "collegeId": "C54e321",
+        "fullName": "kiya kebe",
+        "department": "Mechanicale Engineering",
+        "email": "test2@g.com",
+        "phoneNo": "555-123-45w67"
+    }
+]
