@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { localBackendLink, onlineBackendLink } from '../../utils/links.js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const MemberTable = () => {
+    const navigate = useNavigate()
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState("Members"); // Default selected role
@@ -18,7 +20,30 @@ const MemberTable = () => {
 
     axios.get(apiUrl)
       .then((response) => {
-        console.log(response);
+        console.log('fghjkl',response);
+        setMembers(response.data.members); // Assuming the data is an array of members
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching members:', error);
+        setIsLoading(false);
+      });
+  }, [selectedRole]);
+
+
+  useEffect(() => {
+    console.log('dwf')
+    setIsLoading(true);
+    const token = localStorage.getItem('token');
+    let apiUrl = `${onlineBackendLink}/retrieveAllMembers?token=${token}`;
+
+    if (selectedRole === "Admin") {
+      apiUrl = `${onlineBackendLink}/retrieveAdmins?token=${token}`;
+    }
+
+    axios.get(apiUrl)
+      .then((response) => {
+        console.log('fghjkl',response);
         setMembers(response.data.members); // Assuming the data is an array of members
         setIsLoading(false);
       })
@@ -53,7 +78,7 @@ const MemberTable = () => {
         {!isLoading ? (
           <tbody>
             {members.map((member, index) => (
-              <tr className='hover:bg-[#eceff3] h-[89px] cursor-pointer' key={index}>
+              <tr className='hover:bg-[#eceff3] h-[89px] cursor-pointer' onClick={()=>navigate(`/MembersProfile?email=${member.email}`)}  key={index}>
                 <th>{index + 1}</th>
                 <td>{member.fullName}</td>
                 <td className='max-sm:hidden'>{member.email}</td>

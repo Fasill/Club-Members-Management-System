@@ -3,7 +3,6 @@ import React, { useState,useEffect } from 'react'
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
-import axios from 'axios';
 import {LoginByPassword} from '../components/forms/LoginByPassword.js'
 import {LoginByEmail} from '../components/forms/LoginByEmail.js'
 

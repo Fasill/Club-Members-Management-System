@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import * as yup from 'yup';
+import { useLocation } from 'react-router-dom';
 
 const validationSchema = yup.object().shape({
     collegeId: yup.string(),
@@ -13,11 +14,14 @@ const validationSchema = yup.object().shape({
     fullName: yup.string(),
     phoneNo: yup.string(),
     role: yup.string(),
-    
   });
   
 
-const ProfileForm = () => {
+const MemberProfileForm = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const email = searchParams.get('email');
+
     const navigate = useNavigate()
   const [isSubmited, setIsSubmitted] = useState(false);
     const [userInfo,setUserInfo] = useState({})
@@ -27,6 +31,7 @@ const ProfileForm = () => {
     email: '',
     fullName: '',
     phoneNo: '',
+    role:'',
     password: '', // Initialize the role field
 
   });
@@ -65,8 +70,9 @@ const ProfileForm = () => {
       await validationSchema.validate(formData, { abortEarly: false });
 
       formData.token = localStorage.getItem('token');
+      formData.oldEmail = email
       setIsSubmitting(true);
-      const response = await axios.put(`${onlineBackendLink}/editselfinfo`, formData);
+      const response = await axios.put(`${onlineBackendLink}/editMembersInfo`, formData);
       notify();
       console.log('Member added:', response.data);
       setIsSubmitted(true);
@@ -99,9 +105,10 @@ const ProfileForm = () => {
         // Validate the token on the online backend
 
         // If token is valid, retrieve user information from the local backend
-        const userInfoResponse = await axios.get(`${onlineBackendLink}/retrieveLoggedInUserInfo?token=${token}`);
+        const userInfoResponse = await axios.get(`${onlineBackendLink}/retrieveMemberInfo?email=${email}&token=${token}`);
 
         // Set user information in state
+        console.log("dwdfw",userInfoResponse.data)
         
         setUserInfo(userInfoResponse.data);
       } catch (error) {
@@ -194,16 +201,35 @@ const ProfileForm = () => {
             </div>
 
             <div className="text-black grid justify-items-start">
-              <label className="font-bold text-[#113f67]">Password</label>
+              <label className="font-bold text-[#113f67]">Division</label>
               <input
-                type="password"
-                name="password"
+                type="text"
+                name="division"
+                placeholder={userInfo.division}
 
-                value={formData.password}
+                value={formData.division}
                 onChange={handleInputChange}
                 
                 className="p-3 border h-11 max-w-[40rem] w-full border-gray-400 rounded-md focus:outline-none focus:border-blue-500 bg-transparent"
               />
+            </div>
+
+            
+
+            <div className="text-black grid justify-items-start  w-[100%]">
+              <label className="font-bold text-[#113f67]">Role</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleInputChange}
+                className="cursor-pointer p-3 border h-11  w-full border-gray-400 rounded-md focus:outline-none focus:border-blue-500 bg-transparent"
+              >
+                <option value="" disabled>
+                  {formData.role}
+                </option>
+                <option value="member">Member</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
 
             <button
@@ -220,4 +246,4 @@ const ProfileForm = () => {
   );
 };
 
-export default ProfileForm;
+export default MemberProfileForm;

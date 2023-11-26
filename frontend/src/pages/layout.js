@@ -4,7 +4,9 @@ import SideNavbar from '../components/navbar/SideNavbar.js';
 import NavBar from '../components/navbar/navbar.js';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { localBackendLink,onlineBackendLink } from '../utils/links.js';
+
 import axios from 'axios';
+
 const Layout = () => {
   const navigate = useNavigate();
   const [userinfo,setUserInfo] = useState({});
@@ -15,10 +17,10 @@ const Layout = () => {
         const token = localStorage.getItem('token');
 
         // Validate the token on the online backend
-        const validateResponse = await axios.get(`${localBackendLink}/validateToken?token=${token}`);
+        const validateResponse = await axios.get(`${onlineBackendLink}/validateToken?token=${token}`);
 
         // If token is valid, retrieve user information from the local backend
-        const userInfoResponse = await axios.get(`http://localhost:8080/retrieveLoggedInUserInfo?token=${token}`);
+        const userInfoResponse = await axios.get(`${onlineBackendLink}/retrieveLoggedInUserInfo?token=${token}`);
 
         // Set user information in state
         setUserInfo(userInfoResponse.data);

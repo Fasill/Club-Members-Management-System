@@ -1,6 +1,7 @@
 import React ,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {onlineBackendLink} from '../../utils/links.js';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Navbar = () => {
         // Validate the token on the online backend
 
         // If token is valid, retrieve user information from the local backend
-        const userInfoResponse = await axios.get(`http://localhost:8080/retrieveLoggedInUserInfo?token=${token}`);
+        const userInfoResponse = await axios.get(`${onlineBackendLink}/retrieveLoggedInUserInfo?token=${token}`);
 
         // Set user information in state
         console.log("dwdfw",userInfoResponse.data)
