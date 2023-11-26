@@ -6,7 +6,6 @@ const authRouter = express.Router();
 
 authRouter.post('/login',login);
 authRouter.post('/loginByEmail',loginByEmail);
-
 authRouter.get('/validateToken',validateToken);
 
 export default authRouter;

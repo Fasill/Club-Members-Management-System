@@ -1,13 +1,14 @@
 import express from 'express';
-import multer from 'multer'
-import firebaseMiddleware from '../middleware/firebaseMiddleware.js'
-import uploadController from '../controllers/eventControllers/addEvent.js'
+
+import AddEvent from '../controllers/eventControllers/AddEvent.js'
+import {validateTokenMiddleware} from '../middleware/JwtMiddlewareToProtectHomePage.js';
+import {GetOrderedEvents,publicGetOrderedEvents} from '../controllers/eventControllers/RetriveEvent.js'
 
 const eventRouter = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
 
-eventRouter.use(firebaseMiddleware);
+eventRouter.get('/GetOrderedEvents',validateTokenMiddleware,GetOrderedEvents)
+eventRouter.get('/publicGetOrderedEvents',publicGetOrderedEvents)
 
-eventRouter.post('/upload', upload.single('image'), uploadController);
+eventRouter.post('/upload',validateTokenMiddleware, AddEvent);
 
 export default eventRouter;
