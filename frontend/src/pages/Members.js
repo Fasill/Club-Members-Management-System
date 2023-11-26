@@ -1,14 +1,42 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import AddMemberForm from '../components/forms/AddMEmberForm2.js'
 import csecLogo from '../assets/csecLogo.jpeg';
 import adminlogo from '../assets/adminlogo.png';
 import MemberTable from '../components/tabels/MemberTable.js';
 import SideNavbar from '../components/navbar/SideNavbar.js';
 import NavBar from '../components/navbar/navbar.js';
+import axios from 'axios';
+import { localBackendLink,onlineBackendLink } from '../utils/links.js';
 import { useNavigate } from 'react-router-dom';
-const Members = () => {
+const Members = (props) => {
   const navigate = useNavigate();
-  
+  const [userInfo,setUserInfo] = useState({})
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        // Validate the token on the online backend
+
+        // If token is valid, retrieve user information from the local backend
+        const userInfoResponse = await axios.get(`http://localhost:8080/retrieveLoggedInUserInfo?token=${token}`);
+
+        // Set user information in state
+        console.log("dwdfw",userInfoResponse.data)
+        
+        setUserInfo(userInfoResponse.data);
+      } catch (error) {
+        console.error(error);
+
+        // Handle errors by redirecting to the login page
+        navigate('/login');
+      }
+    };
+
+    // Call the function when the component mounts
+    fetchUserData();
+  }, []); // Empty dependency array to mimic componentDidMount
+
   return (
 
         <>        

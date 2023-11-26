@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard.js';
 // import Members from './pages/Members.js';
 import AddMember from './pages/AddMember.js'
 import Layout from './pages/layout.js'
+import Profile from './pages/Profile.js'
 function App() {
   return (
     <div className="App">
@@ -19,6 +20,8 @@ function App() {
           <Route path='/' element={<Layout/>}>
            <Route path='/addMembers' element = {<AddMember/>}/>
             <Route path='/Members' element = {<Members/>}/>
+            <Route path='/Profile' element = {<Profile/>}/>
+
           </Route>
 
 

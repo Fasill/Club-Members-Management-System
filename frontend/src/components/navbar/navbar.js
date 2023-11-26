@@ -1,11 +1,40 @@
-import React from 'react'
+import React ,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const logout = ()=>{
         localStorage.setItem('token','')
+        navigate('/login')
     }
+    const [userInfo,setUserInfo] = useState({})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        // Validate the token on the online backend
+
+        // If token is valid, retrieve user information from the local backend
+        const userInfoResponse = await axios.get(`http://localhost:8080/retrieveLoggedInUserInfo?token=${token}`);
+
+        // Set user information in state
+        console.log("dwdfw",userInfoResponse.data)
+        setUserInfo(userInfoResponse.data);
+      } catch (error) {
+        console.error(error);
+
+        // Handle errors by redirecting to the login page
+        navigate('/login');
+      }
+    };
+
+    // Call the function when the component mounts
+    fetchUserData();
+  }, []); // Empty dependency array to mimic componentDidMount
+
   return (
     <div className='h-[61px] border-b bg-white flex justify-center'>
         <ul className='flex items-center justify-between w-[100%] pl-5 pr-5'>
@@ -13,9 +42,9 @@ const Navbar = () => {
                 <h1>CSEC</h1>
             </li>
             <li className='flex w-[33.3%] text-[20px] justify-between max-md:hidden'>
-                <p className='cursor-pointer transition-all duration-300 hover:font-bold'>Events</p>
-                <p className='cursor-pointer transition-all duration-300 hover:font-bold'>Profile</p>
-                <p className='cursor-pointer transition-all duration-300 hover:font-bold'>Members</p>
+                <p onClick={()=>{navigate('/Events')}} className='cursor-pointer transition-all duration-300 hover:font-bold'>Events</p>
+                <p onClick={()=>{navigate('/profile')}} className='cursor-pointer transition-all duration-300 hover:font-bold'>Profile</p>
+                <p onClick={()=>{navigate('/members')}} className={`${userInfo.role !== 'president'?'hidden':''} cursor-pointer transition-all duration-300 hover:font-bold`}>Members</p>
 
             </li>
             <li className='flex  justify-end bg  w-[33.3%] '>
@@ -30,7 +59,7 @@ const Navbar = () => {
                   tabIndex={0}
                   className="mt-[10rem] absolute dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-black"
                 >
-                  <li onClick={() => navigate("/app/profile")}><p>Profile</p></li>
+                  <li onClick={() => navigate("/profile")}><p>Profile</p></li>
                   <li onClick={() => navigate("/Members")}><p>Members</p></li>
 
                   <li onClick={logout}><p>Sign Out</p></li>
