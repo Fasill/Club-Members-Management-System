@@ -67,6 +67,7 @@ export const retrieveAdmins = async (req, res) => {
 };
 
 export const retrieveLoggedInUserInfo = async (req, res) => {
+    console.log("ee")
     const { token } = req.query;
 
     const id = decodeTokenAndGetId(token);

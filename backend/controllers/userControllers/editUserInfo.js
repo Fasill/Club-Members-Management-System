@@ -1,10 +1,9 @@
 import { decodeTokenAndGetId } from "../../utils/decodeTokenAndGetId.js";
 import { Users } from '../../models/User.js';
 import bcrypt from 'bcrypt';
-
 export const editSelfInfo = async (req, res) => {
     try {
-        const { token, fullName, email, phoneNo, collegeId, department,  password, division } = req.body;
+        const { token, fullName, email, phoneNo, collegeId, department, password } = req.body;
         const id = decodeTokenAndGetId(token);
 
         const userSnapshot = await Users.doc(id).get();
@@ -22,27 +21,31 @@ export const editSelfInfo = async (req, res) => {
 
         // Update user information based on provided fields
         const updatedUserInfo = {
-            fullName,
-            email,
-            phoneNo,
-            collegeId,
-            department,
-            password: hashedPassword,
-            division
+            ...(fullName && { fullName }),
+            ...(email && { email }),
+            ...(phoneNo && { phoneNo }),
+            ...(collegeId && { collegeId }),
+            ...(department && { department }),
+            ...(hashedPassword && { password: hashedPassword }),
         };
 
-        // Remove undefined fields from the updated user info
-        Object.keys(updatedUserInfo).forEach(key => updatedUserInfo[key] === undefined && delete updatedUserInfo[key]);
+        // Update the user document in Firestore if there are any changes
+        if (Object.keys(updatedUserInfo).length > 0) {
+            // Remove undefined fields from the updated user info
+            Object.keys(updatedUserInfo).forEach(key => updatedUserInfo[key] === undefined && delete updatedUserInfo[key]);
 
-        // Update the user document in Firestore
-        await Users.doc(id).update(updatedUserInfo);
+            await Users.doc(id).update(updatedUserInfo);
 
-        return res.status(200).json({ message: 'User information updated successfully' });
+            return res.status(200).json({ message: 'User information updated successfully' });
+        } else {
+            return res.status(200).json({ message: 'No changes were made to user information' });
+        }
     } catch (error) {
         console.error('Error updating user information:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 export const editMembersInfo = async (req, res) => {
     try {
