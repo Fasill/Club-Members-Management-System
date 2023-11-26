@@ -1,6 +1,7 @@
 import { decodeTokenAndGetId } from "../../utils/decodeTokenAndGetId.js";
 import { Users } from '../../models/User.js';
 import bcrypt from 'bcrypt';
+
 export const editSelfInfo = async (req, res) => {
     try {
         const { token, fullName, email, phoneNo, collegeId, department, password } = req.body;
@@ -46,48 +47,47 @@ export const editSelfInfo = async (req, res) => {
     }
 };
 
-
 export const editMembersInfo = async (req, res) => {
     try {
-        const { token, fullName, email, phoneNo, collegeId, department, role, division } = req.body;
-        const id = decodeTokenAndGetId(token);
+      const { token, fullName, email, phoneNo, collegeId, department, role, division, oldEmail} = req.body;
+      const id = decodeTokenAndGetId(token);
+  
+      // Check if the user making the request is an admin or president
+      const adminSnapshot = await Users.doc(id).get();
+      const adminData = adminSnapshot.data();
+  
+      if (!(adminData.role === 'president' || adminData.role === 'admin')) {
+        return res.status(403).json({ message: 'You are not eligible for this action.' });
+      }
+  
+      // Check if the member to be updated exists
+      const memberSnapshot = await Users.where('email', '==', oldEmail).get();
+  
+      if (memberSnapshot.empty) {
+        return res.status(404).json({ message: 'Member not found.' });
+      }
+      const updatedUserInfo = {
+        ...(fullName && { fullName }),
+        ...(email && { email }),
+        ...(phoneNo && { phoneNo }),
+        ...(collegeId && { collegeId }),
+        ...(department && { department }),
+        ...(role &&{role}) ,
+        ...(division && {division})
+    
+    };
+  
+        // Update the user document in Firestore if there are any changes
+        if (Object.keys(updatedUserInfo).length > 0) {
+            // Remove undefined fields from the updated user info
+            Object.keys(updatedUserInfo).forEach(key => updatedUserInfo[key] === undefined && delete updatedUserInfo[key]);
+            const memberId = memberSnapshot.docs[0].id;
+            await Users.doc(memberId).update(updatedUserInfo);
 
-        // Check if the user making the request is an admin or president
-        const adminSnapshot = await Users.doc(id).get();
-        const adminData = adminSnapshot.data();
-
-        if (!(adminData.role === 'president' || adminData.role === 'admin')) {
-            return res.status(403).json({ message: 'You are not eligible for this action.' });
+            return res.status(200).json({ message: 'User information updated successfully' });
+        } else {
+            return res.status(200).json({ message: 'No changes were made to user information' });
         }
-
-        // Check if the member to be updated exists
-        const memberSnapshot = await Users.where('collegeId', '==', collegeId).get();
-
-        if (memberSnapshot.empty) {
-            return res.status(404).json({ message: 'Member not found.' });
-        }
-
-        // Assuming you are updating only one member, you can get the first document
-        const memberData = memberSnapshot.docs[0].data();
-
-        // Update user information based on provided fields
-        const updatedUserInfo = {
-            fullName,
-            email,
-            phoneNo,
-            collegeId,
-            department,
-            role,
-            division
-        };
-
-        // Remove undefined fields from the updated user info
-        Object.keys(updatedUserInfo).forEach(key => updatedUserInfo[key] === undefined && delete updatedUserInfo[key]);
-
-        // Update the user document in Firestore
-        await Users.doc(memberSnapshot.docs[0].id).update(updatedUserInfo);
-
-        return res.status(200).json({ message: 'User information updated successfully' });
     } catch (error) {
         console.error('Error updating user information:', error);
         return res.status(500).json({ error: 'Internal server error' });

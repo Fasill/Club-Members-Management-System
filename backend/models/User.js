@@ -1,6 +1,7 @@
 import admin from "firebase-admin"
 
-import serviceAccount from "../credentials/serviceAccountKey.json" assert { type: "json" };
+import serviceAccount from "../credentials/serviceAccountKey.json" 
+// assert { type: "json" };
 // import * as serviceAccountKey from './serviceAccountKey.json';
 
 const firebaseConfig = {

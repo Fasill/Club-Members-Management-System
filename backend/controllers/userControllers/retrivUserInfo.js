@@ -67,7 +67,7 @@ export const retrieveAdmins = async (req, res) => {
 };
 
 export const retrieveLoggedInUserInfo = async (req, res) => {
-    console.log("ee")
+
     const { token } = req.query;
 
     const id = decodeTokenAndGetId(token);
@@ -84,3 +84,28 @@ export const retrieveLoggedInUserInfo = async (req, res) => {
         res.status(500).send({ message: 'Internal Server Error' });
     }
 };
+
+export const retrieveMemberInfo = async (req, res) => {
+    const { email, token } = req.query;
+  
+    if (!email || !token) {
+      return res.status(400).send({ message: 'Both email and token are required in the query parameters.' });
+    }
+  
+    try {
+      const userSnapshot = await Users.where('email', '==', email).limit(1).get();
+  
+      if (userSnapshot.empty) {
+        return res.status(404).send({ message: 'User not found.' });
+      }
+  
+      const userData = userSnapshot.docs[0].data();
+  
+  
+      res.send(userData);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  };
+  
