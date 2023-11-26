@@ -25,11 +25,13 @@ export const LoginByPassword = () => {
   const onSubmit =(data) => {
     setIsLoading(true)
 
-    console.log(data.email)
+    console.log(data)
     try{
-      axios.post(`${onlineBackendLink}/login`,data)
+      axios.post(`${localBackendLink}/login`,data)
       .then((response)=>{
         console.log(response)
+        const token = response.data.token
+        localStorage.setItem("token",token)
         navigate('/dashboard')
         // console.log(re)
         setIsLoading(false)
