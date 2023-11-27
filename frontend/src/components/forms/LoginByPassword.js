@@ -32,7 +32,7 @@ export const LoginByPassword = () => {
         console.log(response)
         const token = response.data.token
         localStorage.setItem("token",token)
-        navigate('/dashboard')
+        navigate('/events')
         // console.log(re)
         setIsLoading(false)
       }).catch((e)=>{
