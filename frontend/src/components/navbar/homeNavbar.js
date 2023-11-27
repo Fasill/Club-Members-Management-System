@@ -16,20 +16,18 @@ const HomeNavbar = () => {
             </div>
 
         </div>
-        <ul className='flex justify-between  w-[33.3%]'>
-            <li className='hover:font-bold transition-all duration-300 cursor-pointer'>
+        <ul className='flex justify-between  w-[33.3%] max-md:hidden'>
+            <li className='hover:font-bold transition-all duration-300 cursor-pointer' onClick={()=>navigate('/')}>
                 Home
             </li>
-            <li className='hover:font-bold transition-all duration-300 cursor-pointer'>
-                Contact
-            </li>
-            <li className='hover:font-bold transition-all duration-300 cursor-pointer mr-1'>
+           
+            <li className='hover:font-bold transition-all duration-300 cursor-pointer mr-1 ' onClick={()=>navigate('/home/events')}>
                 Events
             </li>
           
         </ul>
         <div className=' w-[33.3%] flex justify-end'>
-            <button onClick={()=>navigate('/login')} className='bg-[#FFE500] h-[47px]  w-full max-w-[144px] font-bold transition-all duration-300 shadow-md hover:shadow-lg'>
+            <button onClick={()=>navigate('/login')} className='bg-[#ff6f3c] h-[47px]  w-full max-w-[144px] font-bold transition-all duration-300 text-white shadow-md hover:shadow-lg'>
                 LOGIN
             </button>
         </div>

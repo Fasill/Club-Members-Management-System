@@ -9,6 +9,6 @@ const eventRouter = express.Router();
 eventRouter.get('/GetOrderedEvents',validateTokenMiddleware,GetOrderedEvents)
 eventRouter.get('/publicGetOrderedEvents',publicGetOrderedEvents)
 
-eventRouter.post('/upload',validateTokenMiddleware, AddEvent);
+eventRouter.post('/addevent',validateTokenMiddleware, AddEvent);
 
 export default eventRouter;

@@ -22,7 +22,6 @@ const Navbar = () => {
         const userInfoResponse = await axios.get(`${onlineBackendLink}/retrieveLoggedInUserInfo?token=${token}`);
 
         // Set user information in state
-        console.log("dwdfw",userInfoResponse.data)
         setUserInfo(userInfoResponse.data);
       } catch (error) {
         console.error(error);
@@ -45,7 +44,7 @@ const Navbar = () => {
             <li className='flex w-[33.3%] text-[20px] justify-between max-md:hidden'>
                 <p onClick={()=>{navigate('/Events')}} className='cursor-pointer transition-all duration-300 hover:font-bold'>Events</p>
                 <p onClick={()=>{navigate('/profile')}} className='cursor-pointer transition-all duration-300 hover:font-bold'>Profile</p>
-                <p onClick={()=>{navigate('/members')}} className={`${userInfo.role !== 'president'?'hidden':''} cursor-pointer transition-all duration-300 hover:font-bold`}>Members</p>
+                <p onClick={()=>{navigate('/members')}} className={`${userInfo.role === 'member'?'hidden':''} cursor-pointer transition-all duration-300 hover:font-bold`}>Members</p>
 
             </li>
             <li className='flex  justify-end bg  w-[33.3%] '>

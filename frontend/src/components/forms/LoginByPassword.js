@@ -78,7 +78,7 @@ export const LoginByPassword = () => {
                 <button
                   disabled={isLoading}
                     type='submit'
-                    className='bg-[#FFE500] w-[100%] max-w-[487px] h-[60px] text-[26px] font-bold text-white cursor-pointer shadow-md hover:shadow-lg  flex items-center justify-center'
+                    className='bg-[#ff6f3c] w-[100%] max-w-[487px] h-[60px] text-[26px] font-bold text-white cursor-pointer shadow-md hover:shadow-lg  flex items-center justify-center'
                 >{isLoading?(<span className="loading loading-spinner loading-lg"></span>):"LOGIN"}</button>
             </form>
         

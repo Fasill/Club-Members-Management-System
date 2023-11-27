@@ -12,7 +12,7 @@ export const Home = () => {
      <main className='h-[100%]  p-16'>
         <div className=' flex    items-center'>
             <div className='grid h-[15rem]' >
-            <div className='flex gap-2  text-[5rem]'>
+            <div className='flex gap-2  max-md:text-[3rem] text-[5rem]'>
                 <h1>CSEC</h1>
                 <h1>ASTU</h1>
             </div>
@@ -22,7 +22,7 @@ export const Home = () => {
                 <img src={arrow} className='transition-all duration-300 mr-1 hover:mr-0 cursor-pointer'/>
             </div>
             </div>
-                <img src={coddingJif} className='w-[30rem]'/>
+                <img src={coddingJif} className='w-[30rem] max-md:hidden'/>
         </div>
      </main>
     </div>
