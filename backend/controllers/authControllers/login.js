@@ -76,7 +76,8 @@ const sendOtpEmail = async (email, otp) => {
       html: `
         <p>Welcome back! You have successfully logged in to the CSEC Club.</p>
         <p>Click the link below to access your account and start exploring our community:</p>
-        <a href="http://localhost:8080/verifyOtp?k=${otp}&email=${email}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Click here to log in to CSEC Club</a>
+        <a href="http://localhost:3000/verify?&k=${otp}&email=${email}" style="display: inline-block; background-color: #0074b7; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log In to CSEC Club</a>
+     
         <p>We appreciate your continued participation!</p>
       `,
     };
