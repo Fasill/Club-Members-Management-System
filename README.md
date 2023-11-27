@@ -6,7 +6,7 @@ Welcome to the Full Stack Club Management System! This system is built using Rea
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-username/full-stack-club-management-system.git
+   git clone https://github.com/Fasill/Club-Members-Management-System.git
    cd full-stack-club-management-system
    ```
 
@@ -54,6 +54,7 @@ Welcome to the Full Stack Club Management System! This system is built using Rea
 
 - **Admin Privileges:**
   - President and admins can manage members and events.
+  - When an admin adds a member, an email will be sent to the member with relevant details.
 
 - **Event Viewing:**
   - Members can view upcoming events.
